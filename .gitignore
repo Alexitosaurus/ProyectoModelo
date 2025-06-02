@@ -1,0 +1,11 @@
+db/
+documentos/
+documentos_candidatos/
+venv/
+BASE DE DATOS DE CANDIDATOS.xlsx
+
+__pycache__/
+*.pyc
+.DS_Store
+.vscode/
+.env
