@@ -343,3 +343,28 @@ if not df_filtrado.empty and not df_filtrado.equals(df_db):
     ax2.axis("equal")
     plt.tight_layout()
     st.pyplot(fig2)
+
+
+# -----------------------------
+# ⚠️ Zona protegida para reiniciar base de datos
+# -----------------------------
+with st.expander("⚠️ Zona de reinicio de base de datos"):
+    st.markdown("🔒 Esta área permite borrar todos los datos cargados. Usa con precaución.")
+
+    contraseña = st.text_input("Ingresa la contraseña para acceder:", type="password")
+
+    if contraseña == "1234":
+        if st.button("🗑️ Borrar todos los datos"):
+            try:
+                conn = conectar_db()
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM candidatos")
+                conn.commit()
+                conn.close()
+
+                st.success("✅ Todos los datos han sido eliminados correctamente.")
+                st.experimental_rerun()
+            except Exception as e:
+                st.error(f"❌ Error al borrar datos: {e}")
+    elif contraseña != "":
+        st.error("❌ Contraseña incorrecta.")
