@@ -101,7 +101,25 @@ if nombre_busqueda:
 
 # Mostrar resultado filtrado
 st.subheader("📋 Resultados filtrados")
-st.dataframe(df_filtrado)
+def resaltar_filas_por_estatus(row):
+    estatus = str(row["ESTATUS"]).strip().upper()
+    color = "#FFFFFF"  # blanco por defecto
+
+    if estatus == "CONTRATADO":
+        color = "#d5f5e3"  # verde claro
+    elif estatus == "BAJA":
+        color = "#f5b7b1"  # rojo claro
+    elif estatus == "NO APTO":
+        color = "#e8daef"  # morado suave
+    elif estatus == "EN BANCA":
+        color = "#d6eaf8"  # azul muy claro
+    elif estatus == "NO CONTESTÓ":
+        color = "#fcf3cf"  # amarillo claro
+
+    return [f"background-color: {color}"] * len(row)
+
+st.dataframe(df_filtrado.style.apply(resaltar_filas_por_estatus, axis=1))
+
 
 st.subheader("✏️ Editar un candidato")
 
