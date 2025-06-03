@@ -103,17 +103,17 @@ if nombre_busqueda:
 st.subheader("📋 Resultados filtrados")
 def resaltar_filas_por_estatus(row):
     estatus = str(row["ESTATUS"]).strip().upper()
-    color = "#150047"  # blanco por defecto
+    color = "#0e1117"  # blanco por defecto
 
     if estatus == "CONTRATADO":
-        color = "#0e1117"  # verde claro
+        color = "#44c04a"  # verde claro
     elif estatus == "BAJA":
         color = "#ce4b3f"  # rojo claro
     elif estatus == "NO APTO":
         color = "#a43dd8"  # morado suave
     elif estatus == "EN BANCA":
         color = "#2a92dd"  # azul muy claro
-    elif estatus == "NO CONTESTÓ":
+    elif estatus == "NO CONTESTA":
         color = "#e2c13a"  # amarillo claro
 
     return [f"background-color: {color}"] * len(row)
