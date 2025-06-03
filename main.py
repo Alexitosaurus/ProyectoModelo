@@ -111,7 +111,7 @@ def resaltar_filas_por_estatus(row):
         color = "#9e2a20"  # rojo claro
     elif estatus == "NO APTO":
         color = "#7825a1"  # morado suave
-        elif estatus == "EN ESPERA":
+    elif estatus == "EN ESPERA":
         color = "#e747bf"  # morado suave
     elif estatus == "EN BANCA":
         color = "#1a5f91"  # azul muy claro
