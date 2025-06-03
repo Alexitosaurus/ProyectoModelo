@@ -106,15 +106,15 @@ def resaltar_filas_por_estatus(row):
     color = "#FFFFFF"  # blanco por defecto
 
     if estatus == "CONTRATADO":
-        color = "#d5f5e3"  # verde claro
+        color = "#36d67b"  # verde claro
     elif estatus == "BAJA":
-        color = "#f5b7b1"  # rojo claro
+        color = "#ce4b3f"  # rojo claro
     elif estatus == "NO APTO":
-        color = "#e8daef"  # morado suave
+        color = "#a43dd8"  # morado suave
     elif estatus == "EN BANCA":
-        color = "#d6eaf8"  # azul muy claro
+        color = "#2a92dd"  # azul muy claro
     elif estatus == "NO CONTESTÓ":
-        color = "#fcf3cf"  # amarillo claro
+        color = "#e2c13a"  # amarillo claro
 
     return [f"background-color: {color}"] * len(row)
 
