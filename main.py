@@ -32,15 +32,23 @@ def leer_desde_db():
 st.title("Sistema de Gestión de Candidatos - Grupo Modelo")
 
 archivo = st.file_uploader("Sube el archivo Excel", type=["xlsx"])
+if not os.path.exists("db"):
+    os.makedirs("db")
+
 
 if archivo:
-    df_raw = pd.read_excel(archivo, sheet_name=0)
-    df_raw.columns = df_raw.iloc[0]  # Primera fila como encabezado
-    df_raw = df_raw[1:]  # Eliminar fila de encabezados original
-    df_raw = df_raw.reset_index(drop=True)
-
-    guardar_en_db(df_raw)
-    st.success("Archivo cargado y guardado en base de datos.")
+    try:
+        df_raw = pd.read_excel(archivo, sheet_name=0)
+        if not df_raw.empty:
+            df_raw.columns = df_raw.iloc[0]
+            df_raw = df_raw[1:]
+            df_raw = df_raw.reset_index(drop=True)
+            guardar_en_db(df_raw)
+            st.success("Archivo cargado y guardado en base de datos.")
+        else:
+            st.warning("El archivo Excel está vacío.")
+    except Exception as e:
+        st.error(f"Ocurrió un error al leer el archivo Excel: {e}")
 
 # Mostrar datos guardados
 if os.path.exists(DB_PATH):
@@ -48,13 +56,12 @@ if os.path.exists(DB_PATH):
     df_db = leer_desde_db()
     st.dataframe(df_db)
 
-# Función para crear carpeta del candidato
+# Crear carpeta dentro del proyecto para documentos del candidato
 def crear_carpeta_candidato(id_candidato, nombre):
-    carpeta_base = "documentos_candidatos"
+    carpeta_base = os.path.join(".", "documentos_candidatos")
     if not os.path.exists(carpeta_base):
         os.makedirs(carpeta_base)
     
-    # Sanitizar nombre para evitar errores
     nombre_seguro = nombre.replace(" ", "_").replace("/", "-").upper()
     carpeta_candidato = os.path.join(carpeta_base, f"{id_candidato}-{nombre_seguro}")
     os.makedirs(carpeta_candidato, exist_ok=True)
@@ -135,7 +142,7 @@ with st.expander("📁 Documentos del candidato (PDF y Word)"):
     st.markdown("Puedes subir archivos en formato `.pdf` o `.docx`. Usa los campos correspondientes.")
 
     # Ruta base por ID
-    carpeta_actual = os.path.join("documentos", str(id_seleccionado))
+    carpeta_actual = os.path.join(".", "documentos", str(id_seleccionado))
     os.makedirs(carpeta_actual, exist_ok=True)
 
     nomenclatura = {
@@ -157,7 +164,11 @@ with st.expander("📁 Documentos del candidato (PDF y Word)"):
             st.success(f"{etiqueta} cargado correctamente.")
 
     # Mostrar archivos ya existentes
-        archivos_subidos = os.listdir(carpeta_actual)
+   
+        archivos_subidos = []
+if os.path.exists(carpeta_actual):
+    archivos_subidos = os.listdir(carpeta_actual)
+
     if archivos_subidos:
         st.markdown("### 📚 Documentos cargados:")
         for archivo in archivos_subidos:
